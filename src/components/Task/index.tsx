@@ -6,8 +6,8 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 type Props = {
 	task: string;
   onRemove: () => void;
-  onDone: () => void;
-  onNotDone: () => void;
+  onDone: (task: string) => void;
+  onNotDone: (task: string) => void;
 }
 
 export function Task(props:Props){
@@ -22,10 +22,10 @@ export function Task(props:Props){
         onPress={(isChecked: boolean) => {
           console.log(isChecked, "bob")
           if(isChecked === true) {
-            props.onDone()
+            props.onDone(props.task)
           }
           if(isChecked === false){
-            props.onNotDone()
+            props.onNotDone(props.task)
           }
         }}
         text={props.task}

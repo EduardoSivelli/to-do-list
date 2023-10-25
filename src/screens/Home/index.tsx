@@ -11,13 +11,16 @@ export default function Home() {
   const [doneTask, setDoneTask] = useState<number>(0)
   const taskCount = tasks.length
   
+  //Aqui novo
+
+  const [taskDone, setTaskDone] = useState<string[]>([])
   
-  function handleTaskDone(){
-    setDoneTask(prevState => prevState + 1 )
+  function handleTaskDone(task: string){
+    setTaskDone(prevState => [...prevState, task] )
   }
 
-  function handleTaskNotDone(){
-    setDoneTask(prevState => prevState - 1 )
+  function handleTaskNotDone(task: string){
+    setTaskDone(prevState => prevState.filter(item => item !== task) )
   }
 
   function handleTaskAdd(){
@@ -37,7 +40,10 @@ export default function Home() {
         text:'Sim',
         onPress: () => {
           setTasks(prevState => prevState.filter(assignment => assignment !== task))
-          handleTaskNotDone()
+          if(taskDone.includes(task)){
+            setTaskDone(prevState => prevState.filter(assignment => assignment !== task))
+          }
+          handleTaskNotDone(task)
         } // após o filter é só ladeira abaixo
       },
       {
@@ -88,7 +94,7 @@ export default function Home() {
           <View style={styles.doneWrap}>
             <Text style={styles.done}>Concluídas</Text>
             <View style={styles.info}>
-              <Text style={styles.innerInfo} >{doneTask}</Text>
+              <Text style={styles.innerInfo} >{taskDone.length}</Text>
             </View> 
           </View>  
         </View>
@@ -104,8 +110,8 @@ export default function Home() {
               key={item}
               task={item} 
               onRemove={() => handleTaskRemove(item)}
-              onDone={() => handleTaskDone()}
-              onNotDone={() => handleTaskNotDone()}
+              onDone={(task) => handleTaskDone(task)}
+              onNotDone={(task) => handleTaskNotDone(task)}
               />
           )}
           ListEmptyComponent={() => (
